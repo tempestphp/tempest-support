@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace Tempest\Support;
 
-use Countable;
-use function Tempest\get;
-use Tempest\Support\Pluralizer\Pluralizer;
-
 final class LanguageHelper
 {
     /**
-     * Converts the given string to its English plural form.
+     * @param string[] $parts
      */
-    public static function pluralize(string $value, int|array|Countable $count = 2): string
+    public static function join(array $parts): string
     {
-        return get(Pluralizer::class)->pluralize($value, $count);
-    }
+        $last = array_pop($parts);
 
-    /**
-     * Converts the given string to its English singular form.
-     */
-    public static function singularize(string $value): string
-    {
-        return get(Pluralizer::class)->singularize($value);
+        if ($parts) {
+            return implode(', ', $parts) . ' ' . 'and' . ' ' . $last;
+        }
+
+        return $last;
     }
 }
