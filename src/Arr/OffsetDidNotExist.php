@@ -6,6 +6,6 @@ namespace Tempest\Support\Arr;
 
 use Exception;
 
-final class OffsetDoesNotExist extends Exception
+final class OffsetDidNotExist extends Exception
 {
 }

@@ -4,7 +4,7 @@ namespace Tempest\Support\Filesystem\Exceptions;
 
 use Exception;
 
-final class NotFoundException extends Exception implements FilesystemException
+final class PathWasNotFound extends Exception implements FilesystemException
 {
     public static function forPath(string $path): self
     {
