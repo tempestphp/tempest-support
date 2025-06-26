@@ -6,7 +6,7 @@ namespace Tempest\Support\Namespace;
 
 use Exception;
 
-final class PathCouldNotBeMappedToNamespaceException extends Exception
+final class PathCouldNotBeMappedToNamespace extends Exception
 {
     public function __construct(string $path)
     {

@@ -6,7 +6,7 @@ namespace Tempest\Support\Arr;
 
 use Exception;
 
-final class InvalidMapWithKeysUsage extends Exception
+final class MapWithKeysDidNotUseAGenerator extends Exception
 {
     public function __construct()
     {
