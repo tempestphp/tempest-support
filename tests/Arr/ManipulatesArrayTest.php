@@ -574,6 +574,42 @@ final class ManipulatesArrayTest extends TestCase
         $this->assertSame($expected, $current);
     }
 
+    public function test_with_keys(): void
+    {
+        $collection = arr([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'age' => 42,
+        ]);
+        $current = $collection
+            ->withKeys(['first_name', 'last_name'])
+            ->toArray();
+        $expected = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $this->assertSame($expected, $current);
+    }
+
+    public function test_without_keys(): void
+    {
+        $collection = arr([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'age' => 42,
+        ]);
+        $current = $collection
+            ->withoutKeys(['age'])
+            ->toArray();
+        $expected = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $this->assertSame($expected, $current);
+    }
+
     public function test_unique_with_basic_item(): void
     {
         $collection = arr([
