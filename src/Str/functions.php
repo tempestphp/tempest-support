@@ -142,7 +142,7 @@ function to_slug(Stringable|string $string, Stringable|string $separator = '-', 
  */
 function to_ascii(Stringable|string $string, Stringable|string $language = 'en'): string
 {
-    return ASCII::to_ascii((string) $string, (string) $language, replace_single_chars_only: false);
+    return ASCII::to_ascii((string) $string,  $language, replace_single_chars_only: false);
 }
 
 /**
@@ -499,7 +499,7 @@ function replace_every(Stringable|string $haystack, array $replacements): string
     $string = (string) $haystack;
 
     foreach ($replacements as $needle => $replacement) {
-        $string = namespace\replace($string, $needle, (string) $replacement);
+        $string = namespace\replace($string, $needle,  $replacement);
     }
 
     return $string;
