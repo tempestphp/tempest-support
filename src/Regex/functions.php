@@ -35,14 +35,14 @@ function get_matches(Stringable|string $subject, Stringable|string $pattern, boo
         $matches = [];
         $result = match ($global) {
             true => preg_match_all(
-                 $pattern,
+                (string) $pattern,
                 (string) $subject,
                 $matches,
                 $flags,
                 $offset,
             ),
             false => preg_match(
-                 $pattern,
+                (string) $pattern,
                 (string) $subject,
                 $matches,
                 $flags,
