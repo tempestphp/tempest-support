@@ -15,14 +15,14 @@ final class UriTest extends TestCase
     {
         $uri = Uri::from('https://example.com');
 
-        $this->assertSame('https://example.com', $uri->toString());
-        $this->assertSame('https://example.com', (string) $uri);
+        $this->assertSame('https://example.com/', $uri->toString());
+        $this->assertSame('https://example.com/', (string) $uri);
     }
 
     #[Test]
     public function can_be_made_statically(): void
     {
-        $this->assertSame('https://example.com', Uri::from('https://example.com')->toString());
+        $this->assertSame('https://example.com/', Uri::from('https://example.com')->toString());
     }
 
     #[Test]
@@ -33,10 +33,10 @@ final class UriTest extends TestCase
         $this->assertSame('https', $uri->scheme);
 
         $clone = $uri->withScheme('http');
-        $this->assertSame('http://example.com', $clone->toString());
+        $this->assertSame('http://example.com/', $clone->toString());
         $this->assertSame('http', $clone->scheme);
 
-        $this->assertSame('https://example.com', $uri->toString());
+        $this->assertSame('https://example.com/', $uri->toString());
     }
 
     #[Test]
@@ -47,7 +47,7 @@ final class UriTest extends TestCase
         $this->assertNull($uri->user);
 
         $clone = $uri->withUser('frieren');
-        $this->assertSame('https://frieren@example.com', $clone->toString());
+        $this->assertSame('https://frieren@example.com/', $clone->toString());
         $this->assertSame('frieren', $clone->user);
 
         $this->assertNull($uri->user);
@@ -61,7 +61,7 @@ final class UriTest extends TestCase
         $this->assertNull($uri->password);
 
         $clone = $uri->withPassword('magic');
-        $this->assertSame('https://frieren:magic@example.com', $clone->toString());
+        $this->assertSame('https://frieren:magic@example.com/', $clone->toString());
         $this->assertSame('magic', $clone->password);
     }
 
@@ -73,7 +73,7 @@ final class UriTest extends TestCase
         $this->assertSame('example.com', $uri->host);
 
         $clone = $uri->withHost('aureole.magic');
-        $this->assertSame('https://aureole.magic', $clone->toString());
+        $this->assertSame('https://aureole.magic/', $clone->toString());
         $this->assertSame('aureole.magic', $clone->host);
 
         $this->assertSame('example.com', $uri->host);
@@ -87,7 +87,7 @@ final class UriTest extends TestCase
         $this->assertNull($uri->port);
 
         $clone = $uri->withPort(8080);
-        $this->assertSame('https://example.com:8080', $clone->toString());
+        $this->assertSame('https://example.com:8080/', $clone->toString());
         $this->assertSame(8080, $clone->port);
 
         $this->assertNull($uri->port);
@@ -98,13 +98,13 @@ final class UriTest extends TestCase
     {
         $uri = Uri::from('https://example.com');
 
-        $this->assertNull($uri->path);
+        $this->assertSame('/', $uri->path);
 
         $clone = $uri->withPath('foo/bar');
         $this->assertSame('https://example.com/foo/bar', $clone->toString());
         $this->assertSame('foo/bar', $clone->path);
 
-        $this->assertNull($uri->path);
+        $this->assertSame('/', $uri->path);
     }
 
     #[Test]
@@ -115,7 +115,7 @@ final class UriTest extends TestCase
         $this->assertSame([], $uri->query);
 
         $clone = $uri->withQuery(destination: 'aureole', companion: 'fern');
-        $this->assertSame('https://example.com?destination=aureole&companion=fern', $clone->toString());
+        $this->assertSame('https://example.com/?destination=aureole&companion=fern', $clone->toString());
         $this->assertSame(['destination' => 'aureole', 'companion' => 'fern'], $clone->query);
 
         $this->assertSame([], $uri->query);
@@ -127,10 +127,10 @@ final class UriTest extends TestCase
         $uri = Uri::from('https://example.com');
 
         $clone = $uri->withQuery('standalone');
-        $this->assertSame('https://example.com?standalone', $clone->toString());
+        $this->assertSame('https://example.com/?standalone', $clone->toString());
 
         $clone = $uri->withQuery(active: true, disabled: false);
-        $this->assertSame('https://example.com?active=true&disabled=false', $clone->toString());
+        $this->assertSame('https://example.com/?active=true&disabled=false', $clone->toString());
     }
 
     #[Test]
@@ -141,7 +141,7 @@ final class UriTest extends TestCase
         $this->assertNull($uri->fragment);
 
         $clone = $uri->withFragment('adventure');
-        $this->assertSame('https://example.com#adventure', $clone->toString());
+        $this->assertSame('https://example.com/#adventure', $clone->toString());
         $this->assertSame('adventure', $clone->fragment);
 
         $this->assertNull($uri->fragment);
@@ -164,7 +164,7 @@ final class UriTest extends TestCase
         $uri = Uri::from('https://example.com?existing=value');
 
         $clone = $uri->addQuery(destination: 'aureole', companion: 'fern');
-        $this->assertSame('https://example.com?existing=value&destination=aureole&companion=fern', $clone->toString());
+        $this->assertSame('https://example.com/?existing=value&destination=aureole&companion=fern', $clone->toString());
         $this->assertSame(['existing' => 'value', 'destination' => 'aureole', 'companion' => 'fern'], $clone->query);
 
         $this->assertSame(['existing' => 'value'], $uri->query);
@@ -178,7 +178,7 @@ final class UriTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'baz' => 'qux'], $uri->query);
 
         $clone = $uri->removeQuery();
-        $this->assertSame('https://example.com', $clone->toString());
+        $this->assertSame('https://example.com/', $clone->toString());
         $this->assertSame([], $clone->query);
 
         $this->assertSame(['foo' => 'bar', 'baz' => 'qux'], $uri->query);
@@ -190,7 +190,7 @@ final class UriTest extends TestCase
         $uri = Uri::from('https://example.com');
         $withoutQuery = $uri->removeQuery();
 
-        $this->assertSame('https://example.com', $withoutQuery->toString());
+        $this->assertSame('https://example.com/', $withoutQuery->toString());
         $this->assertSame([], $withoutQuery->query);
     }
 
@@ -200,23 +200,23 @@ final class UriTest extends TestCase
         $uri = Uri::from('https://example.com?foo=bar&baz=qux&active=true');
 
         $clone = $uri->withoutQuery('foo');
-        $this->assertSame('https://example.com?baz=qux&active=true', $clone->toString());
+        $this->assertSame('https://example.com/?baz=qux&active=true', $clone->toString());
         $this->assertSame(['baz' => 'qux', 'active' => 'true'], $clone->query);
 
         $clone = $uri->withoutQuery('foo', 'baz');
-        $this->assertSame('https://example.com?active=true', $clone->toString());
+        $this->assertSame('https://example.com/?active=true', $clone->toString());
         $this->assertSame(['active' => 'true'], $clone->query);
 
         $clone = $uri->withoutQuery(foo: 'bar');
-        $this->assertSame('https://example.com?baz=qux&active=true', $clone->toString());
+        $this->assertSame('https://example.com/?baz=qux&active=true', $clone->toString());
         $this->assertSame(['baz' => 'qux', 'active' => 'true'], $clone->query);
 
         $clone = $uri->withoutQuery(foo: 'different');
-        $this->assertSame('https://example.com?foo=bar&baz=qux&active=true', $clone->toString());
+        $this->assertSame('https://example.com/?foo=bar&baz=qux&active=true', $clone->toString());
         $this->assertSame(['foo' => 'bar', 'baz' => 'qux', 'active' => 'true'], $clone->query);
 
         $clone = $uri->withoutQuery('nonexistent');
-        $this->assertSame('https://example.com?foo=bar&baz=qux&active=true', $clone->toString());
+        $this->assertSame('https://example.com/?foo=bar&baz=qux&active=true', $clone->toString());
 
         $this->assertSame(['foo' => 'bar', 'baz' => 'qux', 'active' => 'true'], $uri->query);
     }
@@ -227,7 +227,7 @@ final class UriTest extends TestCase
         $uri = Uri::from('https://example.com');
 
         $clone = $uri->withoutQuery('foo', 'bar');
-        $this->assertSame('https://example.com', $clone->toString());
+        $this->assertSame('https://example.com/', $clone->toString());
         $this->assertSame([], $clone->query);
     }
 
@@ -291,5 +291,110 @@ final class UriTest extends TestCase
         $this->assertSame('/path', $uri->path);
         $this->assertSame(['query' => 'value'], $uri->query);
         $this->assertSame('fragment', $uri->fragment);
+    }
+
+    #[Test]
+    public function zero_values_are_preserved(): void
+    {
+        $uri = Uri::from('https://user:0@example.com');
+        $this->assertSame('0', $uri->password);
+        $this->assertSame('https://user:0@example.com/', $uri->toString());
+
+        $uri = Uri::from('0');
+        $this->assertSame('0', $uri->toString());
+    }
+
+    #[Test]
+    public function host_normalization(): void
+    {
+        $uri = Uri::from('HTTPS://EXAMPLE.COM/path');
+        $this->assertSame('https://example.com/path', $uri->toString());
+
+        $uri = Uri::from('https://bücher.example/');
+        $this->assertSame('https://xn--bcher-kva.example/', $uri->toString());
+        $this->assertSame('xn--bcher-kva.example', $uri->host);
+    }
+
+    #[Test]
+    public function default_ports_are_dropped(): void
+    {
+        $uri = Uri::from('https://example.com:443/path');
+        $this->assertNull($uri->port);
+        $this->assertSame('https://example.com/path', $uri->toString());
+
+        $uri = Uri::from('http://example.com:80/path');
+        $this->assertNull($uri->port);
+        $this->assertSame('http://example.com/path', $uri->toString());
+    }
+
+    #[Test]
+    public function dot_segments_are_resolved(): void
+    {
+        $uri = Uri::from('https://example.com/a/../b');
+        $this->assertSame('/b', $uri->path);
+
+        $uri = Uri::from('https://example.com/a/./b');
+        $this->assertSame('/a/b', $uri->path);
+    }
+
+    #[Test]
+    public function protocol_relative_uris(): void
+    {
+        $uri = Uri::from('//example.com/path');
+        $this->assertNull($uri->scheme);
+        $this->assertSame('example.com', $uri->host);
+        $this->assertSame('/path', $uri->path);
+        $this->assertSame('//example.com/path', $uri->toString());
+    }
+
+    #[Test]
+    public function relative_uris(): void
+    {
+        $uri = Uri::from('frieren/journey');
+        $this->assertNull($uri->scheme);
+        $this->assertNull($uri->host);
+        $this->assertSame('frieren/journey', $uri->path);
+        $this->assertSame('frieren/journey', $uri->toString());
+
+        $uri = Uri::from('/frieren/journey');
+        $this->assertSame('/frieren/journey', $uri->path);
+        $this->assertSame('/frieren/journey', $uri->toString());
+
+        $uri = Uri::from('frieren?chapter=1#end');
+        $this->assertSame('frieren', $uri->path);
+        $this->assertSame('chapter=1', $uri->queryString);
+        $this->assertSame('end', $uri->fragment);
+        $this->assertSame('frieren?chapter=1#end', $uri->toString());
+
+        $uri = Uri::from('?foo=bar');
+        $this->assertNull($uri->path);
+        $this->assertSame('foo=bar', $uri->queryString);
+        $this->assertSame('?foo=bar', $uri->toString());
+
+        $uri = Uri::from('#end');
+        $this->assertNull($uri->path);
+        $this->assertSame('end', $uri->fragment);
+        $this->assertSame('#end', $uri->toString());
+    }
+
+    #[Test]
+    public function protocol_relative_uri_preserves_explicit_default_ports(): void
+    {
+        $uri = Uri::from('//example.com:80/path');
+        $this->assertSame(80, $uri->port);
+        $this->assertSame('//example.com:80/path', (string) $uri);
+
+        $uri = Uri::from('//example.com:443/path');
+        $this->assertSame(443, $uri->port);
+
+        $this->assertSame(80, Uri::from('//example.com:80/path')->withScheme('https')->port);
+    }
+
+    #[Test]
+    public function protocol_relative_uri_normalizes_unicode_host_and_keeps_port(): void
+    {
+        $uri = Uri::from('//bücher.example:80/path');
+        $this->assertSame('xn--bcher-kva.example', $uri->host);
+        $this->assertSame(80, $uri->port);
     }
 }

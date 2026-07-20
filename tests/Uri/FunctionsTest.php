@@ -31,15 +31,15 @@ use function Tempest\Support\Uri\without_query;
 final class FunctionsTest extends TestCase
 {
     #[Test]
-    #[TestWith(['https://example.com', ['foo' => 'bar'], 'https://example.com?foo=bar'])]
-    #[TestWith(['https://example.com?existing=value', ['foo' => 'bar'], 'https://example.com?foo=bar'])]
-    #[TestWith(['https://example.com', ['foo' => 'bar', 'baz' => 'qux'], 'https://example.com?foo=bar&baz=qux'])]
+    #[TestWith(['https://example.com', ['foo' => 'bar'], 'https://example.com/?foo=bar'])]
+    #[TestWith(['https://example.com?existing=value', ['foo' => 'bar'], 'https://example.com/?foo=bar'])]
+    #[TestWith(['https://example.com', ['foo' => 'bar', 'baz' => 'qux'], 'https://example.com/?foo=bar&baz=qux'])]
     #[TestWith(['https://example.com/path', [], 'https://example.com/path'])]
     #[TestWith(['malformed-uri', ['foo' => 'bar'], 'malformed-uri?foo=bar'])]
-    #[TestWith(['https://example.com', ['foo'], 'https://example.com?foo'])]
-    #[TestWith(['https://example.com', ['foo' => true], 'https://example.com?foo=true'])]
-    #[TestWith(['https://example.com', ['foo' => false], 'https://example.com?foo=false'])]
-    #[TestWith(['https://example.com', ['foo' => ['bar' => 'baz']], 'https://example.com?foo%5Bbar%5D=baz'])]
+    #[TestWith(['https://example.com', ['foo'], 'https://example.com/?foo'])]
+    #[TestWith(['https://example.com', ['foo' => true], 'https://example.com/?foo=true'])]
+    #[TestWith(['https://example.com', ['foo' => false], 'https://example.com/?foo=false'])]
+    #[TestWith(['https://example.com', ['foo' => ['bar' => 'baz']], 'https://example.com/?foo%5Bbar%5D=baz'])]
     public function set_query(string $uri, array $query, string $expected): void
     {
         $this->assertSame($expected, set_query($uri, ...$query));
@@ -57,8 +57,8 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com', 'frieren', 'https://example.com#frieren'])]
-    #[TestWith(['https://example.com#old', 'stark', 'https://example.com#stark'])]
+    #[TestWith(['https://example.com', 'frieren', 'https://example.com/#frieren'])]
+    #[TestWith(['https://example.com#old', 'stark', 'https://example.com/#stark'])]
     #[TestWith(['https://example.com/path?query=value', 'fern', 'https://example.com/path?query=value#fern'])]
     #[TestWith(['malformed-uri', 'fragment', 'malformed-uri#fragment'])]
     public function set_fragment(string $uri, string $fragment, string $expected): void
@@ -77,9 +77,9 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com', 'flamme.org', 'https://flamme.org'])]
+    #[TestWith(['https://example.com', 'flamme.org', 'https://flamme.org/'])]
     #[TestWith(['https://old.com/path', 'neue.com', 'https://neue.com/path'])]
-    #[TestWith(['http://user:pass@old.com:8080', 'serie.com', 'http://user:pass@serie.com:8080'])]
+    #[TestWith(['http://user:pass@old.com:8080', 'serie.com', 'http://user:pass@serie.com:8080/'])]
     #[TestWith(['malformed-uri', 'domain.com', '//domain.com/malformed-uri'])]
     public function set_host(string $uri, string $host, string $expected): void
     {
@@ -98,9 +98,9 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com', 'http', 'http://example.com'])]
-    #[TestWith(['http://example.com', 'https', 'https://example.com'])]
-    #[TestWith(['ftp://files.example.com', 'sftp', 'sftp://files.example.com'])]
+    #[TestWith(['https://example.com', 'http', 'http://example.com/'])]
+    #[TestWith(['http://example.com', 'https', 'https://example.com/'])]
+    #[TestWith(['ftp://files.example.com', 'sftp', 'sftp://files.example.com/'])]
     #[TestWith(['malformed-uri', 'https', 'https:malformed-uri'])]
     public function set_scheme(string $uri, string $scheme, string $expected): void
     {
@@ -119,9 +119,9 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com', 8080, 'https://example.com:8080'])]
-    #[TestWith(['https://example.com:80', 9000, 'https://example.com:9000'])]
-    #[TestWith(['http://user:pass@example.com', 3000, 'http://user:pass@example.com:3000'])]
+    #[TestWith(['https://example.com', 8080, 'https://example.com:8080/'])]
+    #[TestWith(['https://example.com:80', 9000, 'https://example.com:9000/'])]
+    #[TestWith(['http://user:pass@example.com', 3000, 'http://user:pass@example.com:3000/'])]
     #[TestWith(['malformed-uri', 8080, 'malformed-uri'])]
     public function set_port(string $uri, int $port, string $expected): void
     {
@@ -139,9 +139,9 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com', 'frieren', 'https://frieren@example.com'])]
-    #[TestWith(['https://old@example.com', 'fern', 'https://fern@example.com'])]
-    #[TestWith(['https://old:pass@example.com', 'stark', 'https://stark:pass@example.com'])]
+    #[TestWith(['https://example.com', 'frieren', 'https://frieren@example.com/'])]
+    #[TestWith(['https://old@example.com', 'fern', 'https://fern@example.com/'])]
+    #[TestWith(['https://old:pass@example.com', 'stark', 'https://stark:pass@example.com/'])]
     #[TestWith(['malformed-uri', 'user', '//user@malformed-uri'])]
     public function set_user(string $uri, string $user, string $expected): void
     {
@@ -159,9 +159,9 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://user@example.com', 'magic', 'https://user:magic@example.com'])]
-    #[TestWith(['https://user:old@example.com', 'spell', 'https://user:spell@example.com'])]
-    #[TestWith(['https://example.com', 'secret', 'https://:secret@example.com'])]
+    #[TestWith(['https://user@example.com', 'magic', 'https://user:magic@example.com/'])]
+    #[TestWith(['https://user:old@example.com', 'spell', 'https://user:spell@example.com/'])]
+    #[TestWith(['https://example.com', 'secret', 'https://:secret@example.com/'])]
     #[TestWith(['malformed-uri', 'pass', '//:pass@malformed-uri'])]
     public function set_password(string $uri, string $pass, string $expected): void
     {
@@ -172,6 +172,7 @@ final class FunctionsTest extends TestCase
     #[TestWith(['https://user:magic@example.com', 'magic'])]
     #[TestWith(['https://example.com', null])]
     #[TestWith(['https://user@example.com', null])]
+    #[TestWith(['https://user:0@example.com', '0'])]
     #[TestWith(['malformed-uri', null])]
     public function get_password(string $uri, ?string $expected): void
     {
@@ -190,8 +191,9 @@ final class FunctionsTest extends TestCase
 
     #[Test]
     #[TestWith(['https://example.com/frieren/journey', '/frieren/journey'])]
-    #[TestWith(['https://example.com', null])]
+    #[TestWith(['https://example.com', '/'])]
     #[TestWith(['https://example.com/', '/'])]
+    #[TestWith(['frieren/journey', 'frieren/journey'])]
     #[TestWith(['malformed-uri', 'malformed-uri'])]
     public function get_path(string $uri, ?string $expected): void
     {
@@ -211,10 +213,10 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com?foo=bar', ['baz' => 'qux'], 'https://example.com?foo=bar&baz=qux'])]
-    #[TestWith(['https://example.com', ['foo' => 'bar'], 'https://example.com?foo=bar'])]
-    #[TestWith(['https://example.com?existing=value', ['new' => 'param'], 'https://example.com?existing=value&new=param'])]
-    #[TestWith(['https://example.com?foo=old', ['foo' => 'new'], 'https://example.com?foo=new'])]
+    #[TestWith(['https://example.com?foo=bar', ['baz' => 'qux'], 'https://example.com/?foo=bar&baz=qux'])]
+    #[TestWith(['https://example.com', ['foo' => 'bar'], 'https://example.com/?foo=bar'])]
+    #[TestWith(['https://example.com?existing=value', ['new' => 'param'], 'https://example.com/?existing=value&new=param'])]
+    #[TestWith(['https://example.com?foo=old', ['foo' => 'new'], 'https://example.com/?foo=new'])]
     #[TestWith(['malformed-uri?foo=bar', ['baz' => 'qux'], 'malformed-uri?foo=bar&baz=qux'])]
     public function merge_query(string $uri, array $query, string $expected): void
     {
@@ -222,11 +224,11 @@ final class FunctionsTest extends TestCase
     }
 
     #[Test]
-    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo'], 'https://example.com?baz=qux'])]
-    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo', 'baz'], 'https://example.com'])]
-    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo' => 'bar'], 'https://example.com?baz=qux'])]
-    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo' => 'wrong'], 'https://example.com?foo=bar&baz=qux'])]
-    #[TestWith(['https://example.com', ['nonexistent'], 'https://example.com'])]
+    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo'], 'https://example.com/?baz=qux'])]
+    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo', 'baz'], 'https://example.com/'])]
+    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo' => 'bar'], 'https://example.com/?baz=qux'])]
+    #[TestWith(['https://example.com?foo=bar&baz=qux', ['foo' => 'wrong'], 'https://example.com/?foo=bar&baz=qux'])]
+    #[TestWith(['https://example.com', ['nonexistent'], 'https://example.com/'])]
     #[TestWith(['malformed-uri?foo=bar', ['foo'], 'malformed-uri'])]
     public function without_query(string $uri, array $query, string $expected): void
     {
